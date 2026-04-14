@@ -1,0 +1,60 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: API-GATEWAY
+
+  cloud:
+    gateway:
+      routes:
+
+        # 🔥 Swagger Docs FIRST (important for priority)
+        - id: auth-docs
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+
+        - id: provider-docs
+          uri: lb://PROVIDER-SERVICE
+          predicates:
+            - Path=/providers/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+
+        # 🔐 AUTH SERVICE APIs
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+
+        # 🔐 PROVIDER SERVICE APIs
+        - id: provider-service
+          uri: lb://PROVIDER-SERVICE
+          predicates:
+            - Path=/providers/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+# 🔥 Swagger Aggregation
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: auth-service
+        url: /auth/v3/api-docs
+
+      - name: provider-service
+        url: /providers/v3/api-docs   # ✅ FIXED (no comma)
