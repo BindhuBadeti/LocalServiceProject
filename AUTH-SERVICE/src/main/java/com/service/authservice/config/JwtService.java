@@ -2,6 +2,8 @@ package com.service.authservice.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -10,11 +12,14 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private final String SECRET = "mysecretkeymysecretkeymysecretkey12345";
+	@Value("${jwt.secret}")
+    private String SECRET;
 
-    private final long ACCESS_EXPIRATION = 1000 * 60 * 60; // 1 hour
-    private final long REFRESH_EXPIRATION = 1000L * 60 * 60 * 24 * 7; // 7 days
+    @Value("${jwt.access-expiration:3600000}")
+    private long ACCESS_EXPIRATION;
 
+    @Value("${jwt.refresh-expiration:604800000}")
+    private long REFRESH_EXPIRATION;
     private Key getKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }

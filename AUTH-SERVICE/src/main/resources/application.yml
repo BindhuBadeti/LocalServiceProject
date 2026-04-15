@@ -1,14 +1,14 @@
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 spring:
   application:
     name: AUTH-SERVICE
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/Auth_DB
-    username: postgres
-    password: postgresql
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/Auth_DB}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgresql}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -27,8 +27,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
-
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
   instance:
     prefer-ip-address: true
 
@@ -41,3 +40,9 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+# 🔐 JWT CONFIG
+jwt:
+  secret: ${JWT_SECRET:mysecretkeymysecretkeymysecretkey12345}
+  access-expiration: ${JWT_ACCESS_EXPIRATION:3600000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
