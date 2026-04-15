@@ -1,5 +1,5 @@
 server:
-  port: 8761
+  port: ${PORT:8761}
 
 spring:
   application:
@@ -12,7 +12,7 @@ eureka:
   server:
     enable-self-preservation: true
   instance:
-    hostname: localhost
+    hostname: ${RENDER_EXTERNAL_HOSTNAME:localhost}
 
 logging:
   level:
