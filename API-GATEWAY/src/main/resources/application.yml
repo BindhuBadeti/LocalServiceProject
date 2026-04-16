@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
@@ -9,7 +9,7 @@ spring:
     gateway:
       routes:
 
-        # 🔥 Swagger Docs FIRST (important for priority)
+        # 🔥 Swagger Docs FIRST
         - id: auth-docs
           uri: lb://AUTH-SERVICE
           predicates:
@@ -39,7 +39,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URL}
 
   instance:
     prefer-ip-address: true
@@ -55,6 +55,9 @@ springdoc:
     urls:
       - name: auth-service
         url: /auth/v3/api-docs
-
       - name: provider-service
-        url: /providers/v3/api-docs   # ✅ FIXED (no comma)
+        url: /providers/v3/api-docs
+
+# 🔐 JWT CONFIG (from Render env)
+jwt:
+  secret: ${JWT_SECRET}
