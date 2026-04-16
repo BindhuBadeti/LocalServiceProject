@@ -1,20 +1,20 @@
 server:
-  port: 8082
+  port: ${PORT:8082}
 
 spring:
   application:
     name: PROVIDER-SERVICE
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/Provider_DB
-    username: postgres
-    password: postgresql
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -27,14 +27,15 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URL}
 
   instance:
     prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.value}
 
 logging:
   level:
-    org.springframework.security: DEBUG
+    org.springframework.security: INFO
 
 springdoc:
   api-docs:
